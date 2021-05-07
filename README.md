@@ -35,8 +35,8 @@ Changelog:
 
 Default_Armory_v2
 
-- Fetching all of the images from wowhead.
-- Fetching tooltip from wowhead.
-- Fetching item data from wowhead.
-- Disabled fetching item_template for the items only if the emulator dosnt support item_template.
-- Enabled caching for the mayor part.
+- Fetching all the images from wowhead.
+- Fetching the tooltips from wowhead.
+- Fetching the item data from wowhead.
+- Disabled fetching item_template data for the items, only if the emulator dosn't support item_template.
+- Enabled caching for the major part.
