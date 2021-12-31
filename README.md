@@ -6,7 +6,30 @@ Tested emulators:
 
 - CATA without item_template (The Cataclysm Preservation Project)
 - TrinityCore Legion
+- AzerothCore
 
+Compatible emulators (Untested): 
+
+'vmangos':
+'trinity':
+'trinity_tbc':
+'trinity_cata':
+'skyfire':
+'arkcore':
+'oregoncore':
+'ascemu':
+'arcemu':
+'mangosr2':
+'mangos':
+'mangoszero':
+'azerothcore': (Tested)
+'trinity_cata_cpp': (Tested) (The Cataclysm Preservation Project)
+'trinity_mop':
+'trinity_wod':
+'trinity_legion': (Tested)
+'trinity_bfa':
+'trinity_sl': (Tested)
+skyfire_mop':
 
 Installation:
 
