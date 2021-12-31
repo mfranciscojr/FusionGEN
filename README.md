@@ -10,26 +10,26 @@ Tested emulators:
 
 Compatible emulators (Untested): 
 
-'vmangos':
-'trinity':
-'trinity_tbc':
-'trinity_cata':
-'skyfire':
-'arkcore':
-'oregoncore':
-'ascemu':
-'arcemu':
-'mangosr2':
-'mangos':
-'mangoszero':
-'azerothcore': (Tested)
-'trinity_cata_cpp': (Tested) (The Cataclysm Preservation Project)
-'trinity_mop':
-'trinity_wod':
-'trinity_legion': (Tested)
-'trinity_bfa':
-'trinity_sl': (Tested)
-skyfire_mop':
+- vmangos :
+- trinity :
+- trinity_tbc :
+- trinity_cata :
+- skyfire :
+- arkcore :
+- oregoncore :
+- ascemu :
+- arcemu :
+- mangosr2 :
+- mangos :
+- mangoszero :
+- azerothcore : (Tested)
+- trinity_cata_cpp : (Tested) (The Cataclysm Preservation Project)
+- trinity_mop :
+- trinity_wod :
+- trinity_legion : (Tested)
+- trinity_bfa :
+- trinity_sl : (Tested)
+- skyfire_mop :
 
 Installation:
 
@@ -46,7 +46,7 @@ Installation:
 	
 	 Put to false if you mainly have "blizzlike" items.
 
-	$config['use_fcms_tooltip'] = false;
+	$config[- use_fcms_tooltip- ] = false;
 
  5. Clear your template cache.
  
@@ -61,5 +61,5 @@ Default_Armory_v2
 - Fetching all the images from wowhead.
 - Fetching the tooltips from wowhead.
 - Fetching the item data from wowhead.
-- Disabled fetching item_template data for the items, only if the emulator dosn't support item_template.
+- Disabled fetching item_template data for the items, only if the emulator dosn- t support item_template.
 - Enabled caching for the major part.
