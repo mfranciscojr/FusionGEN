@@ -27,7 +27,7 @@ Installation
 
 Changelog:
 
-Extended_Armory_v3_RC1 changes
+Default_Armory_v2 changes
 
 - Fetching all of the images from wowhead.
 - Fetching tooltip from wowhead.
