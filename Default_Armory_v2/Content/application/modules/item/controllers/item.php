@@ -40,9 +40,6 @@ class Item extends MX_Controller
 		{
 			$itemName = lang("view_item", "item");
 		}
-		
-
-		$this->template->setTitle($itemName);
 
 		$this->template->setTitle($itemName);
 
@@ -76,7 +73,7 @@ class Item extends MX_Controller
 
 	private function getIcon($id)
 	{
-		$cache = $this->cache->get("items/item_".$this->realm."_".$id);
+		$cache = $this->cache->get("items/item_displayid".$this->realm."_".$id);
 		
 		if($cache !== false)
 		{

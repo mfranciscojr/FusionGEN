@@ -24,6 +24,13 @@ class Icon extends MX_Controller
 			case 'trinity_cata':
 			case 'skyfire':
 			case 'arkcore':
+			case 'oregoncore':
+			case 'ascemu':
+			case 'arcemu':
+			case 'mangosr2':
+			case 'mangos':
+			case 'mangoszero':
+			case 'azerothcore':
 				return true;
 		}
 		
@@ -34,15 +41,16 @@ class Icon extends MX_Controller
 	{
 		switch ($this->getEmulatorString())
 		{
-			case 'trinity_cata_v2':
+			case 'trinity_cata_cpp':
 			case 'trinity_mop':
 			case 'trinity_wod':
 			case 'trinity_legion':
 			case 'trinity_bfa':
 			case 'trinity_sl':
+			case 'skyfire_mop':
 				return true;
 		}
-		
+
 		return false;
 	}
 	/**
@@ -104,7 +112,7 @@ class Icon extends MX_Controller
 		$realmObj = $this->realms->getRealm($realm);
 		$item = $realmObj->getWorld()->getItem($entry);
 				
-		if ((!$item || $item == "empty") && $this->getEmulatorString() == 'trinity_cata_v2')
+		if ((!$item || $item == "empty") && $this->getEmulatorString() == 'trinity_cata_cpp')
 		{
 			return $this->getDisplayIdDB_WH($entry, $realm);
 		}
@@ -128,6 +136,11 @@ class Icon extends MX_Controller
 		{
 			return $this->getDisplayIdDB_WH($entry, $realm);
 		}
+		
+		if ((!$item || $item == "empty") && $this->getEmulatorString() == 'skyfire_mop')
+		{
+			return $this->getDisplayIdDB_WH($entry, $realm);
+		}
 		//Cache the display id
 		
 		if ($this->db->_error_message())
@@ -137,8 +150,8 @@ class Icon extends MX_Controller
 		}
 		else
 		{
-		$this->cache->save("items/item_displayid_".$realm."_".$entry, $item['display_id']);
-		return $item['display_id'];
+		$this->cache->save("items/item_displayid_".$realm."_".$entry, $item['displayid']);
+		return $item['displayid'];
 		}
 	}
 	
