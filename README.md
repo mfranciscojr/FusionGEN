@@ -2,6 +2,7 @@ Description:
 
 Default_Armory_v2 - Display character items and base stats. (Using WoWhead API)
 Should support all the major emulators. Needs testing.
+This module is developed and maintaned by Favorit from FusionGEN
 --------------------------------------------------------------------------
 
 Installation:
