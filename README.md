@@ -1,6 +1,6 @@
 Description:
 
-Default_Armory_v2.1 - Display character items and base stats. (Using WoWhead API)
+Default_Armory_v2.1 - Display character items , stats, achievements and professions. (Using WoWhead API)
 Should support all the major emulators. Needs testing.
 This module is developed and maintaned by Favorit from FusionGEN
 --------------------------------------------------------------------------
@@ -11,7 +11,9 @@ Installation:
  --------------------------------------------------------------------------
  2. Copy the contents of the folder Content into the root folder of your copy of FusionGEN, merge and replace all.
  --------------------------------------------------------------------------
- 3. You must enable this in your worldserver.conf to display character stats properly.
+ 3. Import the content from to SQL folder into your fusiongen database.
+ --------------------------------------------------------------------------
+ 4. You must enable this in your worldserver.conf to display character stats properly.
  --------------------------------------------------------------------------
   		
 	#    PlayerSave.Stats.MinLevel
@@ -20,23 +22,22 @@ Installation:
   	#                     1+ - (Enabled, Level beyond which character stats are saved)
 	PlayerSave.Stats.MinLevel = 1
 
- 4. You must disable the FusionGen tooltip if you dont have item_template in you world database in order to the WoWHead tooltip to work properly.
+ 5. You must disable the FusionGen tooltip if you dont have item_template in you world database in order to the WoWHead tooltip to work properly.
  --------------------------------------------------------------------------
 	
 	You can find it in the config/fusion.php
 	
 	Use FusionCMS tooltip system instead of WoWHead tooltips
-	-------------------------------------------------------------------------
 	
 	Put to false if you mainly have "blizzlike" items.
 
 	$config[- use_fcms_tooltip- ] = false;
 	
- 5. Clear your template cache.
+ 6. Clear your template cache.
  --------------------------------------------------------------------------
- 6. Clear your browsers cache.
+ 7. Clear your browsers cache.
 --------------------------------------------------------------------------
- 7. You are done.
+ 8. You are done.
  --------------------------------------------------------------------------
  
 Tested emulators:
@@ -49,10 +50,11 @@ Tested emulators:
 
 Compatible emulators (Untested): 
 
-- vmangos :
 - trinity :
 - trinity_tbc :
 - trinity_cata :
+- trinity_mop :
+- trinity_wod :
 - skyfire :
 - arkcore :
 - oregoncore :
@@ -61,13 +63,8 @@ Compatible emulators (Untested):
 - mangosr2 :
 - mangos :
 - mangoszero :
+- vmangos :
 - azerothcore :
-- trinity_cata_cpp :
-- trinity_mop :
-- trinity_wod :
-- trinity_legion :
-- trinity_bfa :
-- trinity_sl :
 - skyfire_mop :
 
 Changelog:
