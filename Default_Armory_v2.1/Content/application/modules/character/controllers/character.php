@@ -358,7 +358,6 @@ class Character extends MX_Controller
 		}
 		
 		//default
-		//wotlk 3.3.5a
 		return $this->extra_dbc_model;
 	}
 

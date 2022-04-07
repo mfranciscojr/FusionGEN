@@ -11,10 +11,10 @@ class extra_dbc_model extends CI_Model
 
 	public function getTalentTabs($class)
 	{
-		$query = $this->db->query("	SELECT `data_wotlk_talenttab`.`id`, `data_wotlk_talenttab`.`name`, `data_wotlk_talenttab`.`classes`, `data_wotlk_talenttab`.`order`, `data_wotlk_spellicons`.`iconname` AS icon 
-									FROM `data_wotlk_talenttab` 
-									INNER JOIN `data_wotlk_spellicons` ON `data_wotlk_talenttab`.`spellicon` = `data_wotlk_spellicons`.`id`
-									WHERE `data_wotlk_talenttab`.`classes` = ? 
+		$query = $this->db->query("	SELECT `extra_data_talenttab`.`id`, `extra_data_talenttab`.`name`, `extra_data_talenttab`.`classes`, `extra_data_talenttab`.`order`, `extra_data_spellicons`.`iconname` AS icon 
+									FROM `extra_data_talenttab` 
+									INNER JOIN `extra_data_spellicons` ON `extra_data_talenttab`.`spellicon` = `extra_data_spellicons`.`id`
+									WHERE `extra_data_talenttab`.`classes` = ? 
 									ORDER BY `order` ASC;", 
 									array($class));
 		
@@ -31,7 +31,7 @@ class extra_dbc_model extends CI_Model
 	
 	public function getTalentsForTab($tab)
 	{
-		$this->db->select('*')->from('data_wotlk_talent')->where(array('tab' => $tab))->order_by('id', 'ASC');
+		$this->db->select('*')->from('extra_data_talent')->where(array('tab' => $tab))->order_by('id', 'ASC');
 		$query = $this->db->get();
 		
 		if($query->num_rows() > 0)
@@ -47,7 +47,7 @@ class extra_dbc_model extends CI_Model
 	
 	public function getSpellIcon($spell)
 	{
-		$query = $this->db->query("SELECT `iconname` AS icon FROM `data_wotlk_spellicons` WHERE `id` = (SELECT `data_wotlk_spell`.`spellicon` FROM `data_wotlk_spell` WHERE `data_wotlk_spell`.`spellID` = ?) LIMIT 1;", array($spell));
+		$query = $this->db->query("SELECT `iconname` AS icon FROM `extra_data_spellicons` WHERE `id` = (SELECT `extra_data_spell`.`spellicon` FROM `extra_data_spell` WHERE `extra_data_spell`.`spellID` = ?) LIMIT 1;", array($spell));
 		
 		if($query && $query->num_rows() > 0)
 		{
@@ -62,10 +62,10 @@ class extra_dbc_model extends CI_Model
 	
 	public function getGlyphInfo($id)
 	{
-		$query = $this->db->query("	SELECT `data_wotlk_glyphproperties`.`id`, `data_wotlk_glyphproperties`.`spellid`, `data_wotlk_glyphproperties`.`typeflags`, `data_wotlk_spell`.`spellname` AS name
-									FROM `data_wotlk_glyphproperties` 
-									INNER JOIN `data_wotlk_spell` on `data_wotlk_glyphproperties`.`spellid` = `data_wotlk_spell`.`spellID`  
-									WHERE `data_wotlk_glyphproperties`.`id` = ? 
+		$query = $this->db->query("	SELECT `extra_data_glyphproperties`.`id`, `extra_data_glyphproperties`.`spellid`, `extra_data_glyphproperties`.`typeflags`, `extra_data_spell`.`spellname` AS name
+									FROM `extra_data_glyphproperties` 
+									INNER JOIN `extra_data_spell` on `extra_data_glyphproperties`.`spellid` = `extra_data_spell`.`spellID`  
+									WHERE `extra_data_glyphproperties`.`id` = ? 
 									LIMIT 1;", array($id));
 		
 		if($query->num_rows() > 0)
@@ -87,14 +87,14 @@ class extra_dbc_model extends CI_Model
 		}
 		
 		$query = $this->db->query("	SELECT 
-										`data_wotlk_spellitemenchantment`.`id`, 
-										`data_wotlk_spellitemenchantment`.`description`, 
-										`data_wotlk_spellitemenchantment`.`GemID`, 
-										`data_wotlk_spellitemenchantment`.`EnchantmentCondition`, 
-										`data_wotlk_gemproperties`.`color` 
-									FROM `data_wotlk_spellitemenchantment` 
-									LEFT JOIN `data_wotlk_gemproperties` ON `data_wotlk_gemproperties`.`SpellItemEnchantement` = `data_wotlk_spellitemenchantment`.`id` 
-									WHERE `data_wotlk_spellitemenchantment`.`id` = ? 
+										`extra_data_spellitemenchantment`.`id`, 
+										`extra_data_spellitemenchantment`.`description`, 
+										`extra_data_spellitemenchantment`.`GemID`, 
+										`extra_data_spellitemenchantment`.`EnchantmentCondition`, 
+										`extra_data_gemproperties`.`color` 
+									FROM `extra_data_spellitemenchantment` 
+									LEFT JOIN `extra_data_gemproperties` ON `extra_data_gemproperties`.`SpellItemEnchantement` = `extra_data_spellitemenchantment`.`id` 
+									WHERE `extra_data_spellitemenchantment`.`id` = ? 
 									LIMIT 1;", array($id));
 									
 		if ($query->num_rows() > 0)
@@ -115,7 +115,7 @@ class extra_dbc_model extends CI_Model
 	public function getEnchantmentConditions($ConditionEntry)
 	{
 		$query = $this->db->query("	SELECT *
-									FROM `data_wotlk_spellitemenchantmentcondition` 
+									FROM `extra_data_spellitemenchantmentcondition` 
 									WHERE `id` = ? 
 									LIMIT 1;", array($ConditionEntry));
 									
@@ -134,15 +134,15 @@ class extra_dbc_model extends CI_Model
 	public function getAchievementInfo($id)
 	{
 		$query = $this->db->query("	SELECT 
-										`data_wotlk_achievement`.`id`, 
-										`data_wotlk_achievement`.`name`, 
-										`data_wotlk_achievement`.`description`, 
-										`data_wotlk_achievement`.`points`, 
-										`data_wotlk_achievement`.`icon`,  
-										`data_wotlk_spellicons`.`iconname` 
-									FROM `data_wotlk_achievement` 
-									LEFT JOIN `data_wotlk_spellicons` ON `data_wotlk_spellicons`.`id` = `data_wotlk_achievement`.`icon` 
-									WHERE `data_wotlk_achievement`.`id` = ? 
+										`extra_data_achievement`.`id`, 
+										`extra_data_achievement`.`name`, 
+										`extra_data_achievement`.`description`, 
+										`extra_data_achievement`.`points`, 
+										`extra_data_achievement`.`icon`,  
+										`extra_data_spellicons`.`iconname` 
+									FROM `extra_data_achievement` 
+									LEFT JOIN `extra_data_spellicons` ON `extra_data_spellicons`.`id` = `extra_data_achievement`.`icon` 
+									WHERE `extra_data_achievement`.`id` = ? 
 									LIMIT 1;", array($id));
 		
 		if($query->num_rows() > 0)
