@@ -2,8 +2,8 @@
 	"name": "Item tooltip",
 	"description": "Required by the armory and character viewer to display item stats",
 	"author": {
-		"name": "FusionCMS",
-		"website": "http:\/\/fusion-hub.com"
+		"name": "FusionGEN by Favorit5503",
+		"website": "https://github.com/FusionGen/FusionGEN"
 	},
 	
 	"enabled": true

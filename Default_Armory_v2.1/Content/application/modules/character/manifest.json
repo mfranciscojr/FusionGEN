@@ -1,9 +1,9 @@
 {
 	"name": "Character viewer",
-	"description": "Displays the character stats and items",
+	"description": "Displays the character stats, items, achievements and professions",
 	"author": {
-		"name": "FusionCMS",
-		"website": "http:\/\/fusion-hub.com"
+		"name": "FusionGEN by Favorit5503",
+		"website": "https://github.com/FusionGen/FusionGEN"
 	},
 
 	"permissions": {
