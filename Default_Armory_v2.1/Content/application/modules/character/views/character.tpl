@@ -222,30 +222,50 @@
     	<h3>Recent Achievements</h3>
         
         <ul class="achievements">
-        {if $recent_achievements}
-        
-        	{foreach from=$recent_achievements key=key item=achiev}
-                <li class="achievement">
-                	<div id="icon">
-                        <span class="icon">
-                            <span class="icon-frame frame-12">
-                                <img src="http://wow.zamimg.com/images/wow/icons/small/{strtolower($achiev.iconname)}.jpg" alt="" width="16" height="16">
-                            </span>
-                        </span>
-                    </div>
-                    <div id="info">
-                    	<span id="descr">Earned the achievement <a href="https://wowhead.com/achievement={$achiev.id}" target="_blank">{$achiev.name}</a>{if $achiev.points > 0} for {$achiev.points} points{/if}.</span> <br/><span id="date">{$achiev.date}</span>
-                    </div>
-                    <div class="clear"></div>
-                </li>
-            {/foreach}
-
-        {else}
-        	<li id="no-records">No records ware found.</li>
-        {/if}
-        </ul>
-    </div>
-    
+		{if $fcms_tooltip}
+			{if $recent_achievements}
+				{foreach from=$recent_achievements key=key item=achiev}
+					<li class="achievement">
+						<div id="icon">
+							<span class="icon">
+								<span class="icon-frame frame-12">
+									<img src="http://wow.zamimg.com/images/wow/icons/small/{strtolower($achiev.iconname)}.jpg" alt="" width="16" height="16">
+								</span>
+							</span>
+						</div>
+						<div id="info">
+							<span id="descr">Earned the achievement <a href="https://wowhead.com/achievement={$achiev.id}" target="_blank" data-tip='<div class="wiki-tooltip"><span class="icon-frame frame-56" style="background-image: url(http://wow.zamimg.com/images/wow/icons/large/{strtolower($achiev.iconname)}.jpg);"></span><h3><span class="q0">{if $achiev.points > 0}{$achiev.points} points{/if}</span>{str_replace("'", "&prime;", $achiev.name)}</h3><span class="color-tooltip-yellow">{str_replace("'", "&prime;", $achiev.description)}</span></div>'>{$achiev.name}</a>{if $achiev.points > 0} for {$achiev.points} points{/if}.</span> <br/><span id="date">{$achiev.date}</span>
+						</div>
+						<div class="clear"></div>
+					</li>
+				{/foreach}
+			{else}
+				<li id="no-records">No records ware found.</li>
+			{/if}
+		{else}
+			{if $recent_achievements}
+				{foreach from=$recent_achievements key=key item=achiev}
+					<li class="achievement">
+						<div id="icon">
+							<span class="icon">
+								<span class="icon-frame frame-12">
+									<img src="http://wow.zamimg.com/images/wow/icons/small/{strtolower($achiev.iconname)}.jpg" alt="" width="16" height="16">
+								</span>
+							</span>
+						</div>
+						<div id="info">
+							<span id="descr">Earned the achievement <a href="https://uwowhead.com/achievement={$achiev.id}" target="_blank">{$achiev.name}</a>{if $achiev.points > 0} for {$achiev.points} points{/if}.</span> <br/><span id="date">{$achiev.date}</span>
+						</div>
+						<div class="clear"></div>
+					</li>
+				{/foreach}
+			{else}
+				<li id="no-records">No records ware found.</li>
+			{/if}
+		{/if}	
+		</ul>
+	</div>	
+	
 <div class="professions">
     	<h3>Main Professions</h3>
 		<ul>
