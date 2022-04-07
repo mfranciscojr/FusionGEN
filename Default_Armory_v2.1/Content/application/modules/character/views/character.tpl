@@ -254,7 +254,7 @@
 							</span>
 						</div>
 						<div id="info">
-							<span id="descr">Earned the achievement <a href="https://uwowhead.com/achievement={$achiev.id}" target="_blank">{$achiev.name}</a>{if $achiev.points > 0} for {$achiev.points} points{/if}.</span> <br/><span id="date">{$achiev.date}</span>
+							<span id="descr">Earned the achievement <a href="https://wowhead.com/achievement={$achiev.id}" target="_blank">{$achiev.name}</a>{if $achiev.points > 0} for {$achiev.points} points{/if}.</span> <br/><span id="date">{$achiev.date}</span>
 						</div>
 						<div class="clear"></div>
 					</li>
