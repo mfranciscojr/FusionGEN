@@ -1,6 +1,6 @@
 Description:
 
-Default_Armory_v2 - Display character items and base stats. (Using WoWhead API)
+Default_Armory_v2.1 - Display character items and base stats. (Using WoWhead API)
 Should support all the major emulators. Needs testing.
 This module is developed and maintaned by Favorit from FusionGEN
 --------------------------------------------------------------------------
@@ -71,6 +71,10 @@ Compatible emulators (Untested):
 - skyfire_mop :
 
 Changelog:
+
+Default_Armory_v2.1
+
+- Added achievements and professions.
 
 Default_Armory_v2
 
