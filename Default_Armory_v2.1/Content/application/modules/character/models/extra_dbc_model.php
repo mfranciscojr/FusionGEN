@@ -11,9 +11,9 @@ class extra_dbc_model extends CI_Model
 
 	public function getTalentTabs($class)
 	{
-		$query = $this->db->query("	SELECT `extra_data_talenttab`.`id`, `extra_data_talenttab`.`name`, `extra_data_talenttab`.`classes`, `extra_data_talenttab`.`order`, `extra_data_spellicons`.`iconname` AS icon 
+		$query = $this->db->query("	SELECT `extra_data_talenttab`.`id`, `extra_data_talenttab`.`name`, `extra_data_talenttab`.`classes`, `extra_data_talenttab`.`order`, `extra_data_icons`.`iconname` AS icon 
 									FROM `extra_data_talenttab` 
-									INNER JOIN `extra_data_spellicons` ON `extra_data_talenttab`.`spellicon` = `extra_data_spellicons`.`id`
+									INNER JOIN `extra_data_icons` ON `extra_data_talenttab`.`spellicon` = `extra_data_icons`.`id`
 									WHERE `extra_data_talenttab`.`classes` = ? 
 									ORDER BY `order` ASC;", 
 									array($class));
@@ -47,7 +47,7 @@ class extra_dbc_model extends CI_Model
 	
 	public function getSpellIcon($spell)
 	{
-		$query = $this->db->query("SELECT `iconname` AS icon FROM `extra_data_spellicons` WHERE `id` = (SELECT `extra_data_spell`.`spellicon` FROM `extra_data_spell` WHERE `extra_data_spell`.`spellID` = ?) LIMIT 1;", array($spell));
+		$query = $this->db->query("SELECT `iconname` AS icon FROM `extra_data_icons` WHERE `id` = (SELECT `extra_data_spell`.`spellicon` FROM `extra_data_spell` WHERE `extra_data_spell`.`spellID` = ?) LIMIT 1;", array($spell));
 		
 		if($query && $query->num_rows() > 0)
 		{
@@ -139,9 +139,9 @@ class extra_dbc_model extends CI_Model
 										`extra_data_achievement`.`description`, 
 										`extra_data_achievement`.`points`, 
 										`extra_data_achievement`.`icon`,  
-										`extra_data_spellicons`.`iconname` 
+										`extra_data_icons`.`iconname` 
 									FROM `extra_data_achievement` 
-									LEFT JOIN `extra_data_spellicons` ON `extra_data_spellicons`.`id` = `extra_data_achievement`.`icon` 
+									LEFT JOIN `extra_data_icons` ON `extra_data_icons`.`id` = `extra_data_achievement`.`icon` 
 									WHERE `extra_data_achievement`.`id` = ? 
 									LIMIT 1;", array($id));
 		

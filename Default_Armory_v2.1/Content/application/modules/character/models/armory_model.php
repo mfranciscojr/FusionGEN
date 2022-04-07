@@ -170,15 +170,15 @@ class Armory_model extends CI_Model
 	public function getAchievementInfo($id)
 	{
 		$query = $this->db->query("	SELECT 
-										`data_wotlk_achievement`.`id`, 
-										`data_wotlk_achievement`.`name`, 
-										`data_wotlk_achievement`.`description`, 
-										`data_wotlk_achievement`.`points`, 
-										`data_wotlk_achievement`.`icon`,  
-										`data_wotlk_spellicons`.`iconname` 
-									FROM `data_wotlk_achievement` 
-									LEFT JOIN `data_wotlk_spellicons` ON `data_wotlk_spellicons`.`id` = `data_wotlk_achievement`.`icon` 
-									WHERE `data_wotlk_achievement`.`id` = ? 
+										`extra_data_achievement`.`id`, 
+										`extra_data_achievement`.`name`, 
+										`extra_data_achievement`.`description`, 
+										`extra_data_achievement`.`points`, 
+										`extra_data_achievement`.`icon`,  
+										`extra_data_icons`.`iconname` 
+									FROM `extra_data_achievement` 
+									LEFT JOIN `extra_data_icons` ON `extra_data_icons`.`id` = `extra_data_achievement`.`icon` 
+									WHERE `extra_data_achievement`.`id` = ? 
 									LIMIT 1;", array($id));
 		
 		if($query->num_rows() > 0)
