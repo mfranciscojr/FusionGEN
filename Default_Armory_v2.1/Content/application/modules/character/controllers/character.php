@@ -19,6 +19,11 @@ class Character extends MX_Controller
 	private $accountId;
 	private $account;
 	private $gender;
+	
+	private $achievements;
+	private $professions;
+		
+	private $EmulatorSimpleString = '';
 
 	private $stats;
 	private $items;
@@ -34,6 +39,7 @@ class Character extends MX_Controller
 		$this->css = "modules/character/css/character.css";
 
 		$this->load->model("armory_model");
+		$this->load->model("extra_dbc_model");
 
 		$this->canCache = true;
 		$this->items = array();
@@ -60,6 +66,40 @@ class Character extends MX_Controller
 		{
 			$this->getError();
 		}
+	}
+	
+	private function getEmulatorString()
+	{
+		return $this->EmulatorSimpleString;
+	}
+	
+	private function getEmulatorBuild()
+	{
+		switch ($this->getEmulatorString())
+		{
+			//cata 4.3.4
+			case 'trinity_cata':
+				return '15595';
+			//cata 4.0.6a
+			case 'skyfire':
+			case 'arkcore':
+				return '13633';
+		}
+		
+		return false;
+	}
+
+	private function isCataclysm()
+	{
+		switch ($this->getEmulatorString())
+		{
+			case 'trinity_cata':
+			case 'skyfire':
+			case 'arkcore':
+				return true;
+		}
+		
+		return false;
 	}
 
 	public function getItem($id = false, $slot = 0)
@@ -276,8 +316,98 @@ class Character extends MX_Controller
 				$this->items[$value] = "<div class='item'><img src='".$this->template->page_url."application/images/armory/default/".$image.".gif' /></div>";
 			}
 		}
+		
+		//Get recent achievements
+		$charRecentAchievements = $this->armory_model->getRecentAchievements();
+		
+		if ($charRecentAchievements)
+		{
+			$temp = array();
+			
+			//loop trough the char achievements and get some info
+			foreach ($charRecentAchievements as $key => $achievementData)
+			{
+				//try getting some info about the achievement
+				if ($achievementInfo = $this->getDbcModel()->getAchievementInfo($achievementData['achievement']))
+				{
+					//append the date of the achievement
+					$achievementInfo['date'] = date("d/m/Y", $achievementData['date']);
+					//append to the achievements
+					$temp[] = $achievementInfo;
+				}
+			}
+			$this->achievements = $temp;
+			
+			unset($key, $achievementData, $achievementInfo, $temp);
+		}
+		else
+		{
+			$this->achievements = false;
+		}
+		
+		unset($charRecentAchievements);
+	
+	}
+	
+	private function getDbcModel()
+	{
+		if ($this->isCataclysm())
+		{
+			$this->cata_dbc_model->setBuild($this->getEmulatorBuild());
+			return $this->extra_dbc_model;
+		}
+		
+		//default
+		//wotlk 3.3.5a
+		return $this->extra_dbc_model;
 	}
 
+	private function getProfessionsInfo()
+	{
+		//Get the character's professions
+		$professions = $this->armory_model->getProfessions();
+		
+		//Prevent undefined notice
+		$this->professions['secondary'] = false;
+		
+		if ($professions)
+		{
+			//get the main professions
+			foreach ($professions as $key => $row)
+			{
+				//calculate the percentages
+				$row['percent'] = $this->percent($row['value'], $row['max']);
+				
+				if ($row['category'] === 0)
+				{
+					$this->professions['main'][] = $row;
+				}
+				else if ($row['category'] === 1)
+				{
+					$this->professions['secondary'][] = $row;
+				}
+			}
+		}
+		
+		//make sure we have two records for them main profs
+		for ($i = 0; $i < 2; $i++)
+		{
+			if (!isset($this->professions['main'][$i]))
+				$this->professions['main'][$i] = false;
+		}
+		
+		unset($professions);
+	}
+	
+	public function percent($num_amount, $num_total)
+	{
+		$count1 = $num_amount / $num_total;
+		$count2 = $count1 * 100;
+		$count = number_format($count2, 0);
+		
+		return $count;
+	}
+	
 	private function getBackground()
 	{
 		switch($this->raceName)
@@ -318,6 +448,8 @@ class Character extends MX_Controller
 			{
 				// Load all items and info
 				$this->getInfo();
+				
+				$this->getProfessionsInfo();
 
 				$this->template->setTitle($this->name);
 
@@ -349,7 +481,12 @@ class Character extends MX_Controller
 					"bg" => $this->getBackground(),
 					"realmId" => $this->realm,
 					"fcms_tooltip" => $this->config->item("use_fcms_tooltip"),
-					"has_stats" => $this->realms->getRealm($this->realm)->getEmulator()->hasStats()
+					"has_stats" => $this->realms->getRealm($this->realm)->getEmulator()->hasStats(),
+					//professions
+					"main_professions" => $this->professions['main'],
+					"secondary_professions" => $this->professions['secondary'],
+					//achievements
+					"recent_achievements" => $this->achievements
 				);
 
 				$character = $this->template->loadPage("character.tpl", $charData);
