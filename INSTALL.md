@@ -164,7 +164,8 @@ sudo nano /etc/apache2/conf-available/fusiongen.conf
 
 <Directory /usr/share/fusiongen/html>
 Options Indexes FollowSymLinks MultiViews
-AllowOverride All\n\tRequire all granted
+AllowOverride All
+Require all granted
 </Directory>'
 
 ```
