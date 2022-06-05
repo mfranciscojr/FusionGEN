@@ -31,15 +31,15 @@ sudo systemctl enable apache2 --now
 - Import the Sury PHP repository -- **Debian Buster comes with PHP 7.3 as the default version installable. PHP 7.1.33 can be fetched from this repository.**
 
 ```
-sudo curl -Lo /etc/apt/trusted.gpg.d/php71.gpg https://packages.sury.org/php/apt.gpg
-sudo echo 'deb https://packages.sury.org/php/ buster main' > /etc/apt/sources.list.d/php71.list
+sudo apt install software-properties-common
+sudo add-apt-repository ppa:ondrej/php
 sudo apt-get update
 ```
 
 - Install PHP 7.1.33 -- **FusionGEN does not currently support PHP 7.2 or above! Please install PHP Version 7.1.33.**
 
 ```
-sudo apt-get install libapache2-mod-php7.1 php7.1 php7.1-common php7.1-curl php7.1-dev php7.1-gd php7.1-gmp php-imagick php7.1-json php7.1-mcrypt php7.1-mysql php7.1-mbstring php-pear php7.1-ps php7.1-soap php7.1-xsl
+sudo apt-get install libapache2-mod-php7.1 php7.1 php7.1-common php7.1-curl php7.1-dev php7.1-gd php7.1-gmp php7.1-imagick php7.1-json php7.1-mcrypt php7.1-mysql php7.1-mbstring php-pear php7.1-ps php7.1-soap php7.1-xsl
 ```
 
 ## 2) Webserver Configuration
@@ -49,7 +49,9 @@ sudo apt-get install libapache2-mod-php7.1 php7.1 php7.1-common php7.1-curl php7
 - Pull the latest FusionGEN source. -- **If you're using the latest emulation servers, you will need the master-srp6 branch, otherwise it won't work.**
 ```
 sudo apt-get install git
-git clone -b master-srp6 https://github.com/FusionGen/FusionGEN ~/
+mkdir ~/webserver
+cd ~/webserver
+git clone git@github.com:FusionGen/FusionGEN.git
 ```
 
 - Create the FusionGEN site directory and move the source files into it.
@@ -75,15 +77,26 @@ sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-availab
 sudo a2dissite 000-default
 ```
 
-- Configure PHP logging and timezone settings.
+- Configure PHP logging and timezone settings. 
 ```
 sudo sed -i '/^;error_log[\t ]\+=[\t ]\+syslog/aerror_log = \/var\/log\/php\/error.log' /etc/php/7.1/apache2/php.ini
-sudo sed -i 's/^;\(date\.timezone[\t ]\+=\)/\1 Europe\/Amsterdam/' /etc/php/7.1/apache2/php.ini
+sudo sed -i 's/^;\(date\.timezone[\t ]\+=\)/\1 Asia\/Manila/' /etc/php/7.1/apache2/php.ini
 ```
 
 - Create additional Apache2 configuration for FusionGEN.
 ```
 sudo echo -e '<Directory /usr/share/fusiongen/html>\n\tOptions Indexes FollowSymLinks MultiViews\n\tAllowOverride All\n\tRequire all granted\n</Directory>' > /etc/apache2/conf-available/fusiongen.conf
+
+or
+sudo nano /etc/apache2/conf-available/fusiongen.conf
+paste this.
+
+<Directory /usr/share/fusiongen/html>
+Options Indexes FollowSymLinks MultiViews
+AllowOverride All
+Require all granted
+</Directory>
+
 ```
 
 - Create the Apache2 site configuration for FusionGEN. -- **Edit the ServerAdmin and ServerName with your information.**
@@ -93,6 +106,17 @@ sudo sed -i 's/\(^[\t ]\+ServerAdmin[\t ]\+\).*/\1admin@localhost.localdomain/' 
 sudo sed -i '/^[\t ]\+ServerAdmin[\t ]\+.*/a\\tServerName fusiongen.localhost.localdomain/' /etc/apache2/sites-available/fusiongen.conf
 sudo sed -i 's/\(^[\t ]\+DocumentRoot[\t ]\+\).*/\1\/usr\/share\/fusiongen\/html/' /etc/apache2/sites-available/fusiongen.conf
 sudo sed -i '/^[\t ]\+#Include.*/a\\n\t# Include fusiongen configuration\n\tInclude conf-available\/fusiongen.conf' /etc/apache2/sites-available/fusiongen.conf
+
+or paste
+
+sudo nano /etc/apache2/sites-available/fusiongen.conf
+
+ServerAdmin admin@localhost.localdomain
+ServerName fusiongen.localhost.localdomain
+DocumentRoot /usr/share/fusiongen/html
+Include fusiongen configuration
+Include conf-available/fusiongen.conf
+
 ```
 
 - Enable the required Apache2 modules and the FusionGEN site configuration.
@@ -120,7 +144,7 @@ sudo a2dissite 000-default
 - Configure PHP logging and timezone settings.
 ```
 sudo sed -i '/^;error_log[\t ]\+=[\t ]\+syslog/aerror_log = \/var\/log\/php\/error.log' /etc/php/7.1/apache2/php.ini
-sudo sed -i 's/^;\(date\.timezone[\t ]\+=\)/\1 Europe\/Amsterdam/' /etc/php/7.1/apache2/php.ini
+sudo sed -i 's/^;\(date\.timezone[\t ]\+=\)/\1 Asia\/Manila/' /etc/php/7.1/apache2/php.ini
 ```
 
 - Disable Port 80 on Apache2.
@@ -133,7 +157,24 @@ sudo sed -i 's/\(^Listen[\t ]\+80$\)/#\1/' /etc/apache2/ports.conf
 
 ```
 sudo echo -e '<Directory /usr/share/fusiongen/html>\n\tOptions Indexes FollowSymLinks MultiViews\n\tAllowOverride All\n\tRequire all granted\n</Directory>' > /etc/apache2/conf-available/fusiongen.conf
+
+or paste
+
+sudo nano /etc/apache2/conf-available/fusiongen.conf
+
+<Directory /usr/share/fusiongen/html>
+Options Indexes FollowSymLinks MultiViews
+AllowOverride All\n\tRequire all granted
+</Directory>'
+
 ```
+
+create an ssl certificate for https
+
+```
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/ServerCertificate.key -out /etc/ssl/certs/ServerCertificate.pem
+```
+
 
 - Create the Apache2 site configuration for FusionGEN. -- **Edit the ServerAdmin and ServerName with your information. You will also have to place your certificates into /etc/ssl/certs and your keys into /etc/ssl/private accordingly, then edit SSLCertificateFile, SSLCertificateKeyFile and SSLCACertificateFile with the respective filenames of your certificates/keys.**
 
@@ -142,7 +183,7 @@ sudo sed -i 's/\(^<VirtualHost[\t ]\+\*:\)[0-9]\+\(>\)/\1443\2/' /etc/apache2/si
 sudo sed -i 's/\(^[\t ]\+ServerAdmin[\t ]\+\).*/\1admin@localhost.localdomain/' /etc/apache2/sites-available/fusiongen.conf
 sudo sed -i '/^[\t ]\+ServerAdmin[\t ]\+.*/a\\tServerName fusiongen.localhost.localdomain/' /etc/apache2/sites-available/fusiongen.conf
 sudo sed -i 's/\(^[\t ]\+DocumentRoot[\t ]\+\).*/\1\/usr\/share\/fusiongen\/html/' /etc/apache2/sites-available/fusiongen.conf
-sudo sed -i '/^[\t ]\+DocumentRoot[\t ]\+.*/a\\n\tSSLEngine on\n\tSSLSessionTickets off\n\tSSLProtocol -all +TLSv1.2 +TLSv1.3\n\tSSLCipherSuite HIGH:!aNULL\n\tSSLProxyCipherSuite HIGH:!aNULL\n\tSSLCertificateFile \/etc\/ssl\/certs\/ServerCertificate.pem\n\tSSLCertificateKeyFile \/etc\/ssl\/private\/ServerCertificate.key\n\tSSLCACertificateFile \/etc\/ssl\/certs\/CACertificate.pem' /etc/apache2/sites-available/fusiongen.conf
+sudo sed -i '/^[\t ]\+DocumentRoot[\t ]\+.*/a\\n\tSSLEngine on\n\tSSLSessionTickets off\n\tSSLProtocol -all +TLSv1.2 +TLSv1.3\n\tSSLCipherSuite HIGH:!aNULL\n\tSSLProxyCipherSuite HIGH:!aNULL\n\tSSLCertificateFile \/etc\/ssl\/certs\/ServerCertificate.pem\n\tSSLCertificateKeyFile \/etc\/ssl\/private\/ServerCertificate.key
 sudo sed -i '/^[\t ]\+#Include.*/a\\n\t# Include fusiongen configuration\n\tInclude conf-available\/fusiongen.conf' /etc/apache2/sites-available/fusiongen.conf
 ```
 
