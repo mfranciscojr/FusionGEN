@@ -184,7 +184,7 @@ sudo sed -i 's/\(^<VirtualHost[\t ]\+\*:\)[0-9]\+\(>\)/\1443\2/' /etc/apache2/si
 sudo sed -i 's/\(^[\t ]\+ServerAdmin[\t ]\+\).*/\1admin@localhost.localdomain/' /etc/apache2/sites-available/fusiongen.conf
 sudo sed -i '/^[\t ]\+ServerAdmin[\t ]\+.*/a\\tServerName fusiongen.localhost.localdomain/' /etc/apache2/sites-available/fusiongen.conf
 sudo sed -i 's/\(^[\t ]\+DocumentRoot[\t ]\+\).*/\1\/usr\/share\/fusiongen\/html/' /etc/apache2/sites-available/fusiongen.conf
-sudo sed -i '/^[\t ]\+DocumentRoot[\t ]\+.*/a\\n\tSSLEngine on\n\tSSLSessionTickets off\n\tSSLProtocol -all +TLSv1.2 +TLSv1.3\n\tSSLCipherSuite HIGH:!aNULL\n\tSSLProxyCipherSuite HIGH:!aNULL\n\tSSLCertificateFile \/etc\/ssl\/certs\/ServerCertificate.pem\n\tSSLCertificateKeyFile \/etc\/ssl\/private\/ServerCertificate.key
+sudo sed -i '/^[\t ]\+DocumentRoot[\t ]\+.*/a\\n\tSSLEngine on\n\tSSLSessionTickets off\n\tSSLProtocol -all +TLSv1.2 +TLSv1.3\n\tSSLCipherSuite HIGH:!aNULL\n\tSSLProxyCipherSuite HIGH:!aNULL\n\tSSLCertificateFile \/etc\/ssl\/certs\/ServerCertificate.pem\n\tSSLCertificateKeyFile \/etc\/ssl\/private\/ServerCertificate.key' /etc/apache2/sites-available/fusiongen.conf
 sudo sed -i '/^[\t ]\+#Include.*/a\\n\t# Include fusiongen configuration\n\tInclude conf-available\/fusiongen.conf' /etc/apache2/sites-available/fusiongen.conf
 ```
 
